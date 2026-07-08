@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gregorio Moreta — Gacha Resume</title>
+<style>
+  :root{
+    --pink:#ff6fa5; --teal:#3ed6c5; --yellow:#ffd93b; --purple:#8e7cf3;
+    --bg1:#1a1035; --bg2:#2b1b5e; --card:#fffdf7; --ink:#2a2140;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    background:radial-gradient(ellipse at 50% -20%, var(--bg2), var(--bg1) 70%);
+    min-height:100vh;color:#fff;overflow-x:hidden;
+  }
+  /* twinkling dots */
+  .stars{position:fixed;inset:0;pointer-events:none;z-index:0;}
+  .stars span{position:absolute;border-radius:50%;background:#fff;opacity:.5;animation:tw 3s infinite alternate;}
+  @keyframes tw{from{opacity:.15}to{opacity:.7}}
+
+  header{position:relative;z-index:2;text-align:center;padding:34px 16px 8px;}
+  .neon{
+    font-size:clamp(1.7rem,5vw,2.8rem);font-weight:900;letter-spacing:2px;
+    background:linear-gradient(90deg,var(--pink),var(--yellow),var(--teal));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(0 0 14px rgba(255,111,165,.55));
+  }
+  .subtitle{margin-top:6px;font-size:clamp(.9rem,2.4vw,1.1rem);color:#e9e2ff;font-weight:600;}
+  .subtitle b{color:var(--yellow);}
+  .contact{margin-top:8px;font-size:.85rem;color:#bfb4e8;}
+  .contact a{color:var(--teal);text-decoration:none;font-weight:700;}
+  .contact a:hover{text-decoration:underline;}
+  .avail{margin-top:3px;font-size:.78rem;color:#9a8fd0;font-style:italic;}
+
+  .stage{position:relative;z-index:2;display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;gap:36px;padding:24px 16px 60px;max-width:1050px;margin:0 auto;}
+
+  /* ===== machine (premium) ===== */
+  .machine-wrap{display:flex;flex-direction:column;align-items:center;}
+  .machine{position:relative;width:300px;user-select:none;filter:drop-shadow(0 24px 26px rgba(0,0,0,.55));}
+  .machine.shake{animation:shake .5s;}
+  @keyframes shake{0%,100%{transform:rotate(0)}20%{transform:rotate(-2.5deg)}40%{transform:rotate(2.5deg)}60%{transform:rotate(-1.5deg)}80%{transform:rotate(1.5deg)}}
+  .dome{
+    position:relative;width:252px;height:252px;margin:0 auto;border-radius:50%;
+    background:
+      radial-gradient(ellipse 60% 38% at 33% 24%, rgba(255,255,255,.9), rgba(255,255,255,0) 60%),
+      radial-gradient(ellipse 30% 18% at 70% 78%, rgba(255,255,255,.25), rgba(255,255,255,0) 70%),
+      radial-gradient(circle at 50% 45%, rgba(255,255,255,.06) 40%, rgba(150,175,255,.14) 72%, rgba(90,105,190,.3));
+    border:7px solid transparent;
+    background-clip:padding-box;
+    box-shadow:
+      0 0 0 7px #cfc8ee,
+      0 0 0 9px #8f86c4,
+      0 0 34px rgba(142,124,243,.5),
+      inset 0 -18px 34px rgba(60,50,130,.35),
+      inset 0 14px 30px rgba(255,255,255,.18);
+    overflow:hidden;
+  }
+  .dome::after{ /* curved specular streak */
+    content:'';position:absolute;left:12%;top:6%;width:26%;height:52%;border-radius:50%;
+    background:linear-gradient(160deg, rgba(255,255,255,.75), rgba(255,255,255,0) 65%);
+    transform:rotate(-18deg);pointer-events:none;
+  }
+  .cap{position:absolute;width:52px;height:52px;border-radius:50%;box-shadow:inset -6px -8px 12px rgba(0,0,0,.28), inset 6px 8px 12px rgba(255,255,255,.55), 0 3px 6px rgba(0,0,0,.25);}
+  .cap::before{content:'';position:absolute;left:18%;top:12%;width:26%;height:20%;border-radius:50%;background:rgba(255,255,255,.8);filter:blur(1px);}
+  .cap::after{content:'';position:absolute;left:0;right:0;top:48%;height:4px;background:rgba(255,255,255,.7);box-shadow:0 2px 2px rgba(0,0,0,.15);}
+
+  .collar{ /* metallic band with chasing LEDs */
+    width:262px;height:20px;margin:-12px auto 0;position:relative;z-index:2;border-radius:10px;
+    background:linear-gradient(180deg,#f4f2ff,#b8b0d9 45%,#7d739e 55%,#cdc6e8);
+    box-shadow:0 3px 8px rgba(0,0,0,.4), inset 0 1px 2px #fff;
+    overflow:hidden;
+  }
+  .collar::after{
+    content:'';position:absolute;inset:6px 10px;border-radius:6px;
+    background:repeating-linear-gradient(90deg, var(--yellow) 0 8px, transparent 8px 22px);
+    animation:chase 1.1s linear infinite;opacity:.9;
+    filter:drop-shadow(0 0 4px rgba(255,217,59,.9));
+  }
+  @keyframes chase{to{background-position:22px 0}}
+
+  .body-box{
+    width:238px;height:172px;margin:-4px auto 0;position:relative;z-index:1;
+    background:
+      linear-gradient(90deg, rgba(255,255,255,.28), rgba(255,255,255,0) 22%, rgba(0,0,0,.12) 88%, rgba(0,0,0,.28)),
+      linear-gradient(180deg,#ff7fae,#e04a82 70%,#c23a6e);
+    border-radius:16px 16px 20px 20px;
+    box-shadow:
+      inset 0 3px 6px rgba(255,255,255,.4),
+      inset 4px 0 10px rgba(255,255,255,.15),
+      inset -4px -6px 14px rgba(120,20,60,.5);
+    display:flex;flex-direction:column;align-items:center;
+  }
+  .brandplate{
+    margin-top:10px;position:relative;
+    background:linear-gradient(180deg,#ffe36e,#ffc93b);color:var(--ink);
+    font-weight:900;font-size:.82rem;letter-spacing:2px;padding:5px 18px;border-radius:9px;
+    box-shadow:0 3px 0 #b8860b, 0 5px 8px rgba(0,0,0,.35), inset 0 1px 2px #fff8d0;
+    text-shadow:0 1px 0 rgba(255,255,255,.5);
+  }
+  .faceplate{
+    margin-top:10px;width:190px;display:flex;align-items:center;justify-content:center;gap:16px;
+    background:linear-gradient(180deg,#fdf8ff,#e4defa);border-radius:14px;padding:10px 12px;
+    box-shadow:inset 0 2px 5px rgba(90,70,160,.3), 0 2px 4px rgba(0,0,0,.3);
+  }
+  .coin-slot{width:12px;height:44px;border-radius:6px;background:linear-gradient(180deg,#3a2d73,#241a4d);box-shadow:inset 0 2px 4px #000, 0 1px 1px #fff;position:relative;}
+  .coin-slot::after{content:'';position:absolute;left:50%;top:8px;bottom:8px;width:3px;transform:translateX(-50%);background:#0c0722;border-radius:2px;}
+  .knob{
+    width:64px;height:64px;border-radius:50%;cursor:pointer;border:none;position:relative;transition:transform .2s;
+    background:
+      radial-gradient(circle at 35% 30%, rgba(255,255,255,.95), rgba(255,255,255,0) 40%),
+      conic-gradient(#e8e4fa, #9a90cc, #f2eeff, #857aba, #e8e4fa);
+    box-shadow:0 4px 10px rgba(0,0,0,.45), inset 0 -3px 6px rgba(70,60,130,.4);
+  }
+  .knob::before{ /* inner dial */
+    content:'';position:absolute;inset:9px;border-radius:50%;
+    background:radial-gradient(circle at 38% 32%, #ff9dc0, #e5568c 70%);
+    box-shadow:inset 0 -3px 6px rgba(120,20,60,.5), inset 0 2px 4px rgba(255,255,255,.5);
+  }
+  .knob::after{ /* slot */
+    content:'';position:absolute;left:50%;top:20%;bottom:20%;width:9px;transform:translateX(-50%);
+    background:linear-gradient(180deg,#5c1233,#8f2352);border-radius:5px;box-shadow:inset 0 1px 3px #000;
+  }
+  .knob:hover{transform:scale(1.07);}
+  .knob.spin{animation:spin .6s ease;}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .price-tag{margin-top:8px;font-size:.62rem;font-weight:800;letter-spacing:1.5px;color:#ffe9f2;opacity:.85;}
+
+  .chute{
+    width:92px;height:46px;margin:-6px auto 0;position:relative;z-index:0;
+    background:linear-gradient(180deg,#171040,#0c0722);
+    border-radius:0 0 18px 18px;
+    border:5px solid;border-top:none;
+    border-image:linear-gradient(180deg,#b8b0d9,#6f63a8) 1;
+    box-shadow:inset 0 6px 12px #000, 0 4px 8px rgba(0,0,0,.4);
+  }
+  .chute::after{ /* flap */
+    content:'PUSH';position:absolute;inset:7px 10px 9px;border-radius:4px;
+    background:linear-gradient(180deg,rgba(190,180,235,.32),rgba(190,180,235,.12));
+    color:#9a8fd0;font-size:.55rem;font-weight:800;letter-spacing:2px;
+    display:flex;align-items:center;justify-content:center;
+    border:1px solid rgba(190,180,235,.35);
+  }
+  .base{
+    width:258px;height:16px;margin:-2px auto 0;border-radius:4px 4px 10px 10px;
+    background:linear-gradient(180deg,#4a3c8c,#241a4d);
+    box-shadow:0 6px 14px rgba(0,0,0,.5), inset 0 1px 2px rgba(255,255,255,.25);
+  }
+
+  .hint{margin-top:14px;font-size:.95rem;color:var(--yellow);font-weight:700;animation:pulse 1.6s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+  .counter{margin-top:8px;font-size:.85rem;color:#bfb4e8;}
+  .counter b{color:var(--teal);}
+
+  /* falling capsule */
+  .drop-cap{position:absolute;left:50%;transform:translateX(-50%);top:300px;width:56px;height:56px;border-radius:50%;z-index:5;opacity:0;pointer-events:none;
+    box-shadow:inset -5px -7px 10px rgba(0,0,0,.25), inset 5px 7px 10px rgba(255,255,255,.5);}
+  .drop-cap.falling{animation:fall .9s cubic-bezier(.34,1.56,.64,1) forwards;}
+  @keyframes fall{0%{opacity:0;top:300px}25%{opacity:1}70%{top:428px}85%{top:416px}100%{top:428px;opacity:1}}
+
+  /* ===== reveal card ===== */
+  .reveal-zone{width:400px;max-width:92vw;min-height:420px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;}
+  .placeholder{margin-top:60px;text-align:center;color:#8f83c9;font-size:1rem;line-height:1.6;}
+  .placeholder .big{font-size:3rem;display:block;margin-bottom:10px;filter:grayscale(.3);}
+
+  .card{
+    width:100%;background:var(--card);color:var(--ink);border-radius:20px;padding:24px 24px 20px;
+    box-shadow:0 18px 50px rgba(0,0,0,.5);transform:scale(.6) rotate(-4deg);opacity:0;position:relative;overflow:hidden;
+  }
+  .card.pop{animation:pop .55s cubic-bezier(.34,1.56,.64,1) forwards;}
+  @keyframes pop{to{transform:scale(1) rotate(0);opacity:1}}
+  .rarity{display:inline-block;font-size:.7rem;font-weight:900;letter-spacing:1.5px;padding:4px 12px;border-radius:20px;margin-bottom:10px;}
+  .r-common{background:#d9f2ee;color:#0d7d6f;}
+  .r-rare{background:#e7e1ff;color:#5a48d6;}
+  .r-ultra{background:linear-gradient(90deg,#ffd93b,#ff6fa5);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.25);}
+  .card .emoji{font-size:2.6rem;line-height:1;margin-bottom:8px;display:block;}
+  .card h3{font-size:1.25rem;margin-bottom:8px;}
+  .card p{font-size:.92rem;line-height:1.55;color:#4a4165;}
+  .card .src{margin-top:12px;font-size:.75rem;color:#9a91bd;font-style:italic;}
+  .shine{position:absolute;top:-60%;left:-70%;width:60%;height:220%;transform:rotate(22deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);animation:shine 2.4s .3s ease-out;}
+  @keyframes shine{from{left:-70%}to{left:130%}}
+
+  /* collection tray */
+  .tray{margin-top:22px;display:flex;flex-wrap:wrap;gap:9px;justify-content:center;max-width:400px;}
+  .mini{width:34px;height:34px;border-radius:50%;background:#2f2460;border:2px dashed #4a3c8c;transition:.3s;position:relative;}
+  .mini.got{border-style:solid;border-color:#fff3;box-shadow:0 0 10px rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:1rem;cursor:pointer;}
+  .mini.got:hover{transform:scale(1.2);box-shadow:0 0 16px rgba(255,255,255,.5);}
+  .mini.active{outline:2px solid var(--yellow);outline-offset:2px;}
+  .tray-label{width:100%;text-align:center;font-size:.75rem;color:#8f83c9;margin-bottom:2px;letter-spacing:1px;}
+
+  .complete{margin-top:16px;text-align:center;font-weight:800;color:var(--yellow);font-size:1rem;display:none;line-height:1.6;}
+  .complete a{color:var(--teal);}
+
+  /* confetti */
+  .confetti{position:fixed;top:-10px;z-index:50;width:10px;height:16px;pointer-events:none;animation:cfall linear forwards;}
+  @keyframes cfall{to{transform:translateY(105vh) rotate(720deg)}}
+
+  footer{position:relative;z-index:2;text-align:center;padding:18px;color:#7d71b5;font-size:.78rem;}
+
+  /* ===== responsive ===== */
+  @media(max-width:760px){
+    .stage{gap:22px;flex-direction:column;align-items:center;padding:16px 10px 90px;}
+    .reveal-zone{min-height:0;width:100%;max-width:420px;}
+    .placeholder{margin-top:8px;}
+  }
+  @media(max-width:600px){
+    /* push header below the fixed HUD & music button so nothing overlaps */
+    header{padding-top:64px;}
+    .score-hud{padding:5px 12px;font-size:.8rem;gap:5px;}
+    .score-hud .pts{min-width:30px;}
+    .music-btn{padding:8px 12px;font-size:.72rem;}
+    .contact{font-size:.78rem;padding:0 8px;}
+    .subtitle{padding:0 10px;}
+    #ytwrap{width:190px;}
+    #ytwrap iframe{width:190px;height:107px;}
+    .card{padding:18px 16px 16px;}
+    .card h3{font-size:1.1rem;}
+    .card p{font-size:.88rem;}
+    .tray{gap:7px;max-width:96vw;}
+    .mini{width:31px;height:31px;}
+    .floater{font-size:1.9rem !important;} /* bigger consistent tap targets */
+  }
+  @media(max-width:360px){
+    .machine{transform:scale(.88);transform-origin:top center;margin-bottom:-40px;}
+    .machine.shake{animation:none;} /* avoid compounding transforms on tiny screens */
+  }
+
+  /* ===== music button ===== */
+  .music-btn{
+    position:fixed;top:14px;right:14px;z-index:60;border:none;cursor:pointer;
+    background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;
+    font-size:.85rem;font-weight:800;padding:10px 16px;border-radius:30px;
+    box-shadow:0 4px 16px rgba(142,124,243,.5);transition:transform .2s;
+  }
+  .music-btn:hover{transform:scale(1.06);}
+  .music-btn.playing{animation:bop 1s infinite;}
+  @keyframes bop{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+  #ytwrap{
+    position:fixed;bottom:14px;right:14px;z-index:60;display:none;
+    width:240px;border-radius:14px;overflow:hidden;
+    box-shadow:0 10px 30px rgba(0,0,0,.6);border:2px solid rgba(255,255,255,.2);
+    background:#000;
+  }
+  #ytwrap.show{display:block;}
+  #ytwrap iframe{display:block;width:240px;height:135px;border:0;}
+  #ytwrap .yt-label{background:#12092b;color:#bfb4e8;font-size:.68rem;padding:5px 10px;text-align:center;}
+
+  /* ===== score HUD ===== */
+  .score-hud{
+    position:fixed;top:14px;left:14px;z-index:60;
+    background:rgba(18,9,43,.85);border:2px solid var(--yellow);border-radius:30px;
+    padding:8px 18px;font-weight:900;font-size:1rem;color:var(--yellow);
+    box-shadow:0 4px 16px rgba(255,217,59,.3);letter-spacing:1px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .score-hud .pts{color:#fff;min-width:44px;text-align:right;transition:transform .15s;}
+  .score-hud .pts.bump{transform:scale(1.35);color:var(--teal);}
+
+  /* ===== floating plushies ===== */
+  .floater{
+    position:fixed;z-index:1;cursor:pointer;user-select:none;
+    font-size:2.2rem;filter:drop-shadow(0 4px 8px rgba(0,0,0,.35));
+    animation:floatby linear forwards, bobble 2.4s ease-in-out infinite alternate;
+    transition:transform .15s;
+  }
+  .floater:hover{transform:scale(1.3);}
+  @keyframes floatby{from{left:-70px}to{left:105vw}}
+  @keyframes bobble{from{margin-top:-14px}to{margin-top:14px}}
+  .floater.popped{animation:popout .5s ease forwards;}
+  @keyframes popout{30%{transform:scale(1.6) rotate(15deg);opacity:1}100%{transform:scale(0) rotate(140deg);opacity:0}}
+  .floater.fly{animation:flyoff .65s ease-in forwards;}
+  @keyframes flyoff{20%{transform:scale(1.3)}100%{transform:translate(140px,-180px) rotate(400deg) scale(.2);opacity:0}}
+  .floater.squish{animation:squishpop .55s ease forwards;}
+  @keyframes squishpop{35%{transform:scaleY(.2) scaleX(1.7)}65%{transform:scaleY(1.4) scaleX(.6)}100%{transform:scale(0);opacity:0}}
+  .floater.spinshrink{animation:spinshrink .6s ease-in forwards;}
+  @keyframes spinshrink{40%{transform:rotate(-30deg) scale(1.4)}100%{transform:rotate(720deg) scale(0);opacity:0}}
+  .particle{position:fixed;z-index:56;pointer-events:none;font-size:1rem;}
+
+  /* volume slider in player */
+  .yt-label input[type=range]{width:92%;margin:6px auto 2px;display:block;accent-color:var(--pink);cursor:pointer;}
+  .yt-warn{color:var(--yellow);font-size:.66rem;line-height:1.5;padding:2px 4px 4px;}
+  .float-score{
+    position:fixed;z-index:55;font-weight:900;color:var(--yellow);font-size:1rem;
+    pointer-events:none;animation:riseup 1s ease-out forwards;text-shadow:0 2px 6px rgba(0,0,0,.5);
+  }
+  @keyframes riseup{to{transform:translateY(-50px);opacity:0}}
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<button class="music-btn" id="musicBtn" title="du bist gut genug ♪">🎵 Play music</button>
+<div id="ytwrap"></div>
+<div class="score-hud" title="Points from popping plushies & collecting capsules">🏆 SCORE <span class="pts" id="score">0</span></div>
+
+<header>
+  <div class="neon">GREGORIO MORETA</div>
+  <div class="subtitle">General Store Manager Candidate — <b>Gatcha Bowery</b> · Arcade, Café &amp; Retail Operations</div>
+  <div class="contact">📮 <a href="mailto:greg.moreta1@gmail.com">greg.moreta1@gmail.com</a> · New York, NY · Bilingual English / Español</div>
+  <div class="avail">Available all shifts — overnights, weekends &amp; holidays included</div>
+</header>
+
+<div class="stage">
+  <!-- machine -->
+  <div class="machine-wrap">
+    <div class="machine" id="machine">
+      <div class="dome" id="dome"></div>
+      <div class="collar"></div>
+      <div class="body-box">
+        <div class="brandplate">RESUME GACHA</div>
+        <div class="faceplate">
+          <div class="coin-slot" title="Insert 1 credit"></div>
+          <button class="knob" id="knob" aria-label="Turn the knob to reveal a skill"></button>
+        </div>
+        <div class="price-tag">1 PULL · 1 CREDIT · NO DUPES</div>
+      </div>
+      <div class="chute"></div>
+      <div class="base"></div>
+      <div class="drop-cap" id="dropCap"></div>
+    </div>
+    <div class="hint" id="hint">▼ Turn the knob for a pull! ▼</div>
+    <div class="counter">Collected: <b id="count">0</b> / <b id="total">0</b></div>
+  </div>
+
+  <!-- reveal -->
+  <div class="reveal-zone">
+    <div id="revealArea">
+      <div class="placeholder"><span class="big">🎰</span>Every capsule holds one of Gregorio's<br>real skills &amp; experiences.<br>Collect them all!</div>
+    </div>
+    <div class="tray" id="tray"><div class="tray-label">CAPSULE COLLECTION</div></div>
+    <div class="complete" id="complete">
+      ✨ FULL SET COLLECTED! ✨<br>
+      You just reviewed the whole resume.<br>
+      <a href="mailto:greg.moreta1@gmail.com?subject=Gatcha%20Bowery%20—%20General%20Store%20Manager">Hire this player →</a>
+    </div>
+  </div>
+</div>
+
+<footer>Made with ♥ for Gatcha Bowery · Chinatown, NYC</footer>
+
+<script>
+const CAPS = [
+  {e:"🔑", t:"Key Holder & Nightly Closer", r:"rare",
+   d:"Directs day-to-day floor operations and owns end-of-shift closing at a flagship high-volume NYC store — ensuring consistent execution of service, quality, and safety standards, responsible for all shift sales and answering for any system discrepancies.",
+   s:"Van Leeuwen · NoHo, NYC", c:"#ff6fa5"},
+  {e:"📦", t:"Cost & Shrink Control", r:"common",
+   d:"Manages controllable expenses — par levels, product dating, shrinkage, and waste — protecting margins the way a GM protects a P&L. Maps straight onto prize, plush, and merch stock.",
+   s:"Van Leeuwen · NoHo, NYC", c:"#3ed6c5"},
+  {e:"🔧", t:"Facilities & Vendors", r:"common",
+   d:"Receives and signs for vendor deliveries, coordinates with maintenance on equipment issues, and performs minor repairs personally to minimize operational downtime.",
+   s:"Van Leeuwen · NoHo, NYC", c:"#7ee08a"},
+  {e:"🌪️", t:"High-Volume Under Pressure", r:"rare",
+   d:"Ran a kitchen solo inside Grand Central Terminal — hundreds of tickets a day through nonstop rushes without dropping standards.",
+   s:"San Wei · Grand Central, NYC", c:"#ffd93b"},
+  {e:"🎓", t:"Directed Daily Operations", r:"rare",
+   d:"Directed daily operations of a high-volume instruction program — promoted to Senior Instructor on performance and retention metrics, analyzing KPIs and implementing action plans across 10+ cohorts of up to 30 students (300+ total).",
+   s:"General Assembly · 3 years", c:"#8e7cf3"},
+  {e:"☕", t:"East Asian Café Operations", r:"common",
+   d:"Barista at a high-volume Korean café — specialty drinks, POS, inventory, and open/close procedures. Direct experience with the café concept inside Gatcha Bowery.",
+   s:"Semicolon Cafe · NYC", c:"#ff9d5c"},
+  {e:"🗣️", t:"Bilingual: English / Español", r:"rare",
+   d:"Fully bilingual — a real asset for the Bowery/Chinatown neighborhood's guests and staff.",
+   s:"Native NYC", c:"#5cc8ff"},
+  {e:"🌙", t:"Overnight Reliability", r:"common",
+   d:"Overnight cook & shift supervisor at an iconic 24-hour institution near the Bowery — hundreds of orders per shift, solo or with a skeleton crew. Covers call-outs, runs doubles.",
+   s:"Veselka · East Village, NYC", c:"#b39ddb"},
+  {e:"💖", t:"Guest & Team Relations", r:"common",
+   d:"Fields and resolves complaints from customers and fellow employees alike, de-escalates high-stress moments, and drives upsell promotions and loyalty-program participation.",
+   s:"Across all roles", c:"#f48fb1"},
+  {e:"🕹️", t:"Gacha Culture — Firsthand", r:"ultra",
+   d:"Traveled Japan's arcades and gachapon shops. Lifelong gamer fluent in the gaming, anime, and collectible-plush communities Gatcha serves. This isn't just a job — it's the culture.",
+   s:"Japan travel + lifelong gaming", c:"#ffd93b"},
+  {e:"🚀", t:"Ready for Day One", r:"ultra",
+   d:"Ten+ years of NYC storefront operations, a NYC Food Protection Certificate, and the drive to open, staff, and run Gatcha's new Bowery location from the ground up.",
+   s:"The whole resume, combined", c:"#ff6fa5"},
+];
+
+const RLABEL = {common:"COMMON", rare:"★ RARE", ultra:"✦ ULTRA RARE ✦"};
+let remaining = [...CAPS.keys()], got = [], busy = false;
+
+const $ = id => document.getElementById(id);
+$("total").textContent = CAPS.length;
+
+/* stars */
+(() => {
+  const s = $("stars");
+  for (let i=0;i<45;i++){
+    const d=document.createElement("span");
+    const sz=Math.random()*2.5+1;
+    d.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${Math.random()*3}s`;
+    s.appendChild(d);
+  }
+})();
+
+/* dome capsules */
+const domeCaps=[];
+(() => {
+  const dome=$("dome"), cols=["#ff6fa5","#3ed6c5","#ffd93b","#8e7cf3","#ff9d5c","#5cc8ff"];
+  const spots=[[38,150],[95,165],[152,150],[68,120],[125,115],[30,105],[160,100],[98,80],[55,72],[140,70],[100,45]];
+  spots.forEach((p,i)=>{
+    const c=document.createElement("div");
+    c.className="cap";
+    c.style.cssText=`left:${p[0]}px;top:${p[1]}px;background:${cols[i%cols.length]};transform:rotate(${Math.random()*360}deg)`;
+    dome.appendChild(c); domeCaps.push(c);
+  });
+})();
+
+/* remove one capsule from the dome (machine empties as you pull) */
+function consumeDomeCap(){
+  if(!domeCaps.length) return;
+  const i=Math.floor(Math.random()*domeCaps.length);
+  const c=domeCaps.splice(i,1)[0];
+  c.animate(
+    [{opacity:1},{transform:"translate(0,130px) scale(.5) rotate(200deg)",opacity:0}],
+    {duration:600,easing:"ease-in",delay:150}
+  ).onfinish=()=>c.remove();
+}
+
+/* tumble the dome capsules randomly */
+function tumbleCaps(){
+  domeCaps.forEach(c=>{
+    const dx=(Math.random()-.5)*46, dy=-(Math.random()*40+8), r=(Math.random()-.5)*540;
+    c.animate([
+      {transform:c.style.transform || "rotate(0deg)"},
+      {transform:`translate(${dx}px,${dy}px) rotate(${r}deg)`, offset:.45},
+      {transform:`translate(${dx*.3}px,0px) rotate(${r*1.3}deg)`}
+    ],{duration:650+Math.random()*450, delay:Math.random()*180, easing:"cubic-bezier(.34,1.4,.64,1)"});
+  });
+}
+
+/* tray slots */
+CAPS.forEach((c,i)=>{
+  const m=document.createElement("div");
+  m.className="mini"; m.id="mini"+i; m.title="???";
+  $("tray").appendChild(m);
+});
+
+function confetti(){
+  const cols=["#ff6fa5","#3ed6c5","#ffd93b","#8e7cf3","#fff"];
+  for(let i=0;i<80;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.cssText=`left:${Math.random()*100}vw;background:${cols[i%cols.length]};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*.6}s;border-radius:${Math.random()>.5?"50%":"2px"}`;
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),5000);
+  }
+}
+
+function pull(){
+  if(busy) return;
+  if(!remaining.length){ $("hint").textContent="Full set collected! 🎉"; return; }
+  busy=true;
+  const knob=$("knob"), machine=$("machine"), drop=$("dropCap");
+  knob.classList.add("spin"); machine.classList.add("shake");
+  tumbleCaps();
+  consumeDomeCap();
+  const idx = remaining.splice(Math.floor(Math.random()*remaining.length),1)[0];
+  const cap = CAPS[idx];
+  drop.style.background = cap.c;
+  setTimeout(()=>{ drop.classList.add("falling"); },420);
+  setTimeout(()=>{
+    knob.classList.remove("spin"); machine.classList.remove("shake");
+    reveal(idx);
+    drop.classList.remove("falling");
+    busy=false;
+  },1350);
+}
+
+function showCard(idx){
+  const cap=CAPS[idx];
+  document.querySelectorAll(".mini.active").forEach(m=>m.classList.remove("active"));
+  $("mini"+idx).classList.add("active");
+  $("revealArea").innerHTML=`
+    <div class="card pop">
+      <div class="shine"></div>
+      <span class="rarity r-${cap.r}">${RLABEL[cap.r]}</span>
+      <span class="emoji">${cap.e}</span>
+      <h3>${cap.t}</h3>
+      <p>${cap.d}</p>
+      <div class="src">📍 ${cap.s}</div>
+    </div>`;
+}
+
+function reveal(idx){
+  const cap=CAPS[idx]; got.push(idx);
+  $("count").textContent=got.length;
+  const mini=$("mini"+idx);
+  mini.classList.add("got"); mini.style.background=cap.c; mini.textContent=cap.e;
+  mini.title=cap.t+" — click to re-read";
+  mini.addEventListener("click",()=>showCard(idx));
+  showCard(idx);
+  addScore(cap.r==="ultra" ? 100 : 25);
+  if(cap.r==="ultra") confetti();
+  if(got.length===CAPS.length){
+    $("complete").style.display="block";
+    $("hint").textContent="Full set collected! 🎉";
+    addScore(500);
+    confetti();
+  }
+}
+
+$("knob").addEventListener("click",pull);
+
+/* ===== score tracker ===== */
+let score=0;
+function addScore(n){
+  score+=n;
+  const el=$("score");
+  el.textContent=score;
+  el.classList.remove("bump"); void el.offsetWidth; el.classList.add("bump");
+  setTimeout(()=>el.classList.remove("bump"),200);
+}
+
+/* ===== background music (YouTube mini-player with source fallback) ===== */
+(() => {
+  // "du bist gut genug" — multiple sources in case one blocks embedding
+  const SOURCES=[
+    {id:"U2Vd1Oj-sGU", list:"PLUWjsmi3AOWc-wcKD8Q6yVaG9x7czIlPt", label:"Gregorio's playlist"},
+    {id:"aMawxCcP_xU", label:"DU BIST GUT GENUG — 1hr loop"},
+    {id:"jmfsEUV9cj4", label:"KITSCHKRIEG — Gut Genug (official)"},
+    {id:"HDAZT0VD0pk", label:"Gut Genug (lyrics)"},
+  ];
+  const btn=$("musicBtn"), wrap=$("ytwrap");
+  let on=false, src=0, vol=70;
+  const isLocal = location.protocol==="file:";
+  function render(){
+    const s=SOURCES[src];
+    const warn = isLocal
+      ? `<div class="yt-warn">⚠ YouTube blocks playback when this page is opened as a local file (Error 153).
+         Host the page online (GitHub Pages / Netlify — free) and the music will work.</div>` : "";
+    const listParam = s.list ? `list=${s.list}&loop=1` : `loop=1&playlist=${s.id}`;
+    wrap.innerHTML=`<iframe id="ytframe" src="https://www.youtube.com/embed/${s.id}?autoplay=1&${listParam}&enablejsapi=1"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope"></iframe>
+      <div class="yt-label">♪ ${s.label}
+      <input type="range" id="ytvol" min="0" max="100" value="${vol}" title="Volume">
+      <a href="#" id="nextSrc" style="color:var(--teal);font-weight:700;">not playing? try next source ▸</a>${warn}</div>`;
+    const frame=document.getElementById("ytframe");
+    const send=(func,args=[])=>frame.contentWindow.postMessage(JSON.stringify({event:"command",func,args}),"*");
+    frame.addEventListener("load",()=>setTimeout(()=>send("setVolume",[vol]),800));
+    document.getElementById("ytvol").addEventListener("input",e=>{
+      vol=+e.target.value; send("setVolume",[vol]);
+    });
+    document.getElementById("nextSrc").addEventListener("click",e=>{
+      e.preventDefault(); src=(src+1)%SOURCES.length; render();
+    });
+  }
+  btn.addEventListener("click",()=>{
+    on=!on;
+    if(on){
+      render(); wrap.classList.add("show");
+      btn.textContent="🔇 Stop music"; btn.classList.add("playing");
+    }else{
+      wrap.innerHTML=""; wrap.classList.remove("show");
+      btn.textContent="🎵 Play music"; btn.classList.remove("playing");
+    }
+  });
+})();
+
+/* ===== floating gacha plushies ===== */
+(() => {
+  const ITEMS=["🧸","🐢","🍞","🐱","👾","🎮","🍡","🦄","🐙","⭐","🍜","🐼"];
+  let popped=0;
+  function spawn(){
+    if(document.querySelectorAll(".floater").length>=5) return;
+    const f=document.createElement("div");
+    f.className="floater"; f.textContent=ITEMS[Math.floor(Math.random()*ITEMS.length)];
+    const dur=14+Math.random()*14;
+    // on small screens keep plushies in the top/bottom bands so they stay tappable and off the content
+    const mobile=window.innerWidth<700;
+    f.style.top=mobile
+      ? (Math.random()<.5 ? (2+Math.random()*6) : (78+Math.random()*14))+"vh"
+      : (8+Math.random()*78)+"vh";
+    f.style.animationDuration=`${dur}s, ${1.8+Math.random()*1.6}s`;
+    f.style.fontSize=(1.6+Math.random()*1.4)+"rem";
+    f.addEventListener("click",e=>{
+      if(f.dataset.done) return;
+      f.dataset.done="1"; popped++;
+      // freeze current position so the pop animation plays in place
+      const r=f.getBoundingClientRect();
+      f.style.left=r.left+"px"; f.style.top=r.top+"px"; f.style.marginTop="0";
+      // random pop animation
+      const anims=["popped","fly","squish","spinshrink"];
+      f.classList.add(anims[Math.floor(Math.random()*anims.length)]);
+      // particle burst
+      const PARTS=["✨","💫","⭐","💥","🌟"];
+      for(let i=0;i<6;i++){
+        const p=document.createElement("div");
+        p.className="particle"; p.textContent=PARTS[Math.floor(Math.random()*PARTS.length)];
+        p.style.left=e.clientX+"px"; p.style.top=e.clientY+"px";
+        document.body.appendChild(p);
+        const a=Math.random()*Math.PI*2, d=40+Math.random()*60;
+        p.animate(
+          [{transform:"translate(0,0) scale(1)",opacity:1},
+           {transform:`translate(${Math.cos(a)*d}px,${Math.sin(a)*d}px) scale(.3) rotate(${(Math.random()-.5)*360}deg)`,opacity:0}],
+          {duration:600+Math.random()*300,easing:"ease-out"}
+        ).onfinish=()=>p.remove();
+      }
+      const pts=popped%5===0 ? 50 : 10;
+      addScore(pts);
+      const s=document.createElement("div");
+      s.className="float-score";
+      s.textContent=popped%5===0 ? "+50 GATCHA GET!" : "+10";
+      s.style.left=e.clientX+"px"; s.style.top=(e.clientY-20)+"px";
+      document.body.appendChild(s);
+      setTimeout(()=>s.remove(),1000);
+      setTimeout(()=>f.remove(),700);
+    });
+    document.body.appendChild(f);
+    setTimeout(()=>f.remove(),dur*1000+500);
+  }
+  spawn(); setTimeout(spawn,2500);
+  setInterval(spawn,5000);
+})();
+</script>
+</body>
+</html>
