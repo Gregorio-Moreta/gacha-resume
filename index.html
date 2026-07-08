@@ -251,7 +251,13 @@
   }
   #ytwrap.show{display:block;}
   #ytwrap iframe{display:block;width:240px;height:135px;border:0;transition:height .25s;}
-  #ytwrap .yt-label{background:#12092b;color:#bfb4e8;font-size:.68rem;padding:5px 10px;text-align:center;}
+  #ytwrap .yt-label{background:#12092b;color:#bfb4e8;font-size:.68rem;padding:5px 10px 8px;text-align:center;}
+  .yt-btn{
+    display:inline-block;margin:5px 3px 1px;padding:7px 12px;border-radius:16px;
+    font-size:.72rem;font-weight:800;text-decoration:none !important;letter-spacing:.3px;
+  }
+  #ytmin.yt-btn{background:var(--pink);color:#fff !important;}
+  #nextSrc.yt-btn{background:var(--teal);color:#082b26 !important;}
   /* video hidden but iframe kept alive so audio keeps playing */
   #ytwrap.min iframe{height:0;}
   #ytwrap.min{width:190px;}
@@ -552,9 +558,9 @@ function addScore(n){
     wrap.innerHTML=`<iframe id="ytframe" src="https://www.youtube.com/embed/${s.id}?autoplay=1&${listParam}&enablejsapi=1"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope"></iframe>
       <div class="yt-label">♪ ${s.label}
-      <input type="range" id="ytvol" min="0" max="100" value="${vol}" title="Volume">
-      <a href="#" id="ytmin" style="color:var(--pink);font-weight:700;">hide video ▾</a> ·
-      <a href="#" id="nextSrc" style="color:var(--teal);font-weight:700;">next source ▸</a>${warn}</div>`;
+      <input type="range" id="ytvol" min="0" max="100" value="${vol}" title="Volume"><br>
+      <a href="#" id="ytmin" class="yt-btn">🙈 Hide video</a>
+      <a href="#" id="nextSrc" class="yt-btn">⏭ Next source</a>${warn}</div>`;
     const frame=document.getElementById("ytframe");
     const send=(func,args=[])=>frame.contentWindow.postMessage(JSON.stringify({event:"command",func,args}),"*");
     frame.addEventListener("load",()=>setTimeout(()=>send("setVolume",[vol]),800));
@@ -567,7 +573,7 @@ function addScore(n){
     document.getElementById("ytmin").addEventListener("click",e=>{
       e.preventDefault();
       const min=wrap.classList.toggle("min");
-      e.target.textContent = min ? "show video ▴" : "hide video ▾";
+      e.target.textContent = min ? "🐵 Show video" : "🙈 Hide video";
     });
   }
   btn.addEventListener("click",()=>{
@@ -576,6 +582,8 @@ function addScore(n){
     if(on){
       render(); wrap.classList.add("show");
       btn.textContent="🔇 Stop music"; btn.classList.add("playing");
+      // scroll the machine into view so prizes and the knob stay clear of the player
+      setTimeout(()=>{$("machine").scrollIntoView({behavior:"smooth",block:"center"});},350);
     }else{
       wrap.innerHTML=""; wrap.classList.remove("show");
       btn.textContent="🎵 Play music"; btn.classList.remove("playing");
