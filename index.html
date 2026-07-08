@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gregorio Moreta — Gacha Resume</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='47' fill='%23ffd93b'/><path d='M9 50a41 41 0 0 1 82 0z' fill='%23ff6fa5'/><path d='M9 50a41 41 0 0 0 82 0z' fill='%23fffdf7'/><rect x='7' y='46.5' width='86' height='7' rx='3.5' fill='%23e8e2ff'/><circle cx='34' cy='28' r='8' fill='%23ffffff' opacity='.85'/><circle cx='62' cy='68' r='5' fill='%23ffd6e6' opacity='.9'/></svg>">
 <style>
   :root{
     --pink:#ff6fa5; --teal:#3ed6c5; --yellow:#ffd93b; --purple:#8e7cf3;
@@ -20,7 +21,8 @@
   .stars span{position:absolute;border-radius:50%;background:#fff;opacity:.5;animation:tw 3s infinite alternate;}
   @keyframes tw{from{opacity:.15}to{opacity:.7}}
 
-  header{position:relative;z-index:2;text-align:center;padding:34px 16px 8px;}
+  /* padding-top clears the fixed score HUD and music button at every screen size */
+  header{position:relative;z-index:2;text-align:center;padding:78px 16px 8px;}
   .neon{
     font-size:clamp(1.7rem,5vw,2.8rem);font-weight:900;letter-spacing:2px;
     background:linear-gradient(90deg,var(--pink),var(--yellow),var(--teal));
@@ -205,8 +207,7 @@
     .placeholder{margin-top:8px;}
   }
   @media(max-width:600px){
-    /* push header below the fixed HUD & music button so nothing overlaps */
-    header{padding-top:64px;}
+    header{padding-top:66px;}
     .score-hud{padding:5px 12px;font-size:.8rem;gap:5px;}
     .score-hud .pts{min-width:30px;}
     .music-btn{padding:8px 12px;font-size:.72rem;}
@@ -219,7 +220,8 @@
     .card p{font-size:.88rem;}
     .tray{gap:7px;max-width:96vw;}
     .mini{width:31px;height:31px;}
-    .floater{font-size:1.9rem !important;} /* bigger consistent tap targets */
+    /* bigger tap targets, and float ABOVE content so taps register on mobile */
+    .floater{font-size:1.9rem !important;z-index:3;}
   }
   @media(max-width:360px){
     .machine{transform:scale(.88);transform-origin:top center;margin-bottom:-40px;}
@@ -568,7 +570,7 @@ function addScore(n){
     // on small screens keep plushies in the top/bottom bands so they stay tappable and off the content
     const mobile=window.innerWidth<700;
     f.style.top=mobile
-      ? (Math.random()<.5 ? (2+Math.random()*6) : (78+Math.random()*14))+"vh"
+      ? (Math.random()<.5 ? (11+Math.random()*8) : (74+Math.random()*12))+"vh"
       : (8+Math.random()*78)+"vh";
     f.style.animationDuration=`${dur}s, ${1.8+Math.random()*1.6}s`;
     f.style.fontSize=(1.6+Math.random()*1.4)+"rem";
