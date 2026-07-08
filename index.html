@@ -15,7 +15,10 @@
     font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
     background:radial-gradient(ellipse at 50% -20%, var(--bg2), var(--bg1) 70%);
     min-height:100vh;color:#fff;overflow-x:hidden;
+    user-select:none;-webkit-user-select:none; /* text can't be highlighted — keeps plushie taps clean */
   }
+  /* plushie mode: hide everything except text content + plushies */
+  body.zen .stage, body.zen footer{display:none;}
   /* twinkling dots */
   .stars{position:fixed;inset:0;pointer-events:none;z-index:0;}
   .stars span{position:absolute;border-radius:50%;background:#fff;opacity:.5;animation:tw 3s infinite alternate;}
@@ -243,8 +246,19 @@
     background:#000;
   }
   #ytwrap.show{display:block;}
-  #ytwrap iframe{display:block;width:240px;height:135px;border:0;}
+  #ytwrap iframe{display:block;width:240px;height:135px;border:0;transition:height .25s;}
   #ytwrap .yt-label{background:#12092b;color:#bfb4e8;font-size:.68rem;padding:5px 10px;text-align:center;}
+  /* video hidden but iframe kept alive so audio keeps playing */
+  #ytwrap.min iframe{height:0;}
+  #ytwrap.min{width:190px;}
+
+  /* plushie mode toggle */
+  .zen-btn{
+    position:fixed;bottom:14px;left:14px;z-index:60;border:none;cursor:pointer;
+    background:linear-gradient(135deg,var(--teal),#2aa79a);color:#082b26;
+    font-size:.8rem;font-weight:800;padding:9px 14px;border-radius:30px;
+    box-shadow:0 4px 16px rgba(62,214,197,.4);
+  }
 
   /* ===== score HUD ===== */
   .score-hud{
@@ -293,6 +307,7 @@
 <button class="music-btn" id="musicBtn" title="du bist gut genug ♪">🎵 Play music</button>
 <div id="ytwrap"></div>
 <div class="score-hud" title="Points from popping plushies & collecting capsules">🏆 SCORE <span class="pts" id="score">0</span></div>
+<button class="zen-btn" id="zenBtn">🫧 Plushie mode</button>
 
 <header>
   <div class="neon">GREGORIO MORETA</div>
@@ -534,7 +549,8 @@ function addScore(n){
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope"></iframe>
       <div class="yt-label">♪ ${s.label}
       <input type="range" id="ytvol" min="0" max="100" value="${vol}" title="Volume">
-      <a href="#" id="nextSrc" style="color:var(--teal);font-weight:700;">not playing? try next source ▸</a>${warn}</div>`;
+      <a href="#" id="ytmin" style="color:var(--pink);font-weight:700;">hide video ▾</a> ·
+      <a href="#" id="nextSrc" style="color:var(--teal);font-weight:700;">next source ▸</a>${warn}</div>`;
     const frame=document.getElementById("ytframe");
     const send=(func,args=[])=>frame.contentWindow.postMessage(JSON.stringify({event:"command",func,args}),"*");
     frame.addEventListener("load",()=>setTimeout(()=>send("setVolume",[vol]),800));
@@ -543,6 +559,11 @@ function addScore(n){
     });
     document.getElementById("nextSrc").addEventListener("click",e=>{
       e.preventDefault(); src=(src+1)%SOURCES.length; render();
+    });
+    document.getElementById("ytmin").addEventListener("click",e=>{
+      e.preventDefault();
+      const min=wrap.classList.toggle("min");
+      e.target.textContent = min ? "show video ▴" : "hide video ▾";
     });
   }
   btn.addEventListener("click",()=>{
@@ -562,15 +583,17 @@ function addScore(n){
   const ITEMS=["🧸","🐢","🍞","🐱","👾","🎮","🍡","🦄","🐙","⭐","🍜","🐼"];
   let popped=0;
   function spawn(){
-    if(document.querySelectorAll(".floater").length>=5) return;
+    const zen=document.body.classList.contains("zen");
+    if(document.querySelectorAll(".floater").length>=(zen?9:5)) return;
     const f=document.createElement("div");
     f.className="floater";
     const b=document.createElement("span");
     b.className="bob"; b.textContent=ITEMS[Math.floor(Math.random()*ITEMS.length)];
     f.appendChild(b);
     const dur=14+Math.random()*14;
-    // on small screens keep plushies in the top/bottom bands so they stay tappable and off the content
-    const mobile=window.innerWidth<700;
+    // on small screens keep plushies in the top/bottom bands so they stay tappable and off the content;
+    // in plushie mode the screen is clear, so let them roam everywhere
+    const mobile=window.innerWidth<700 && !zen;
     f.style.top=mobile
       ? (Math.random()<.5 ? (1+Math.random()*5) : (76+Math.random()*12))+"vh"
       : (8+Math.random()*78)+"vh";
@@ -618,6 +641,13 @@ function addScore(n){
   }
   spawn(); setTimeout(spawn,2500);
   setInterval(spawn,5000);
+
+  // plushie mode toggle
+  $("zenBtn").addEventListener("click",()=>{
+    const zen=document.body.classList.toggle("zen");
+    $("zenBtn").textContent = zen ? "🎰 Show machine" : "🫧 Plushie mode";
+    if(zen){spawn();spawn();}
+  });
 })();
 </script>
 </body>
