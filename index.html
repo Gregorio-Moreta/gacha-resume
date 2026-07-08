@@ -17,8 +17,8 @@
     min-height:100vh;color:#fff;overflow-x:hidden;
     user-select:none;-webkit-user-select:none; /* text can't be highlighted — keeps plushie taps clean */
   }
-  /* plushie mode: hide everything except text content + plushies */
-  body.zen .stage, body.zen footer{display:none;}
+  /* plushie mode: hide the machine/cards but keep text content (incl. footer) visible */
+  body.zen .stage{display:none;}
   /* while the music player is open, reserve space at the bottom so it never covers the machine or cards */
   body.player-open .stage{padding-bottom:250px;}
   body.player-open footer{margin-bottom:220px;}
@@ -203,7 +203,8 @@
   .confetti{position:fixed;top:-10px;z-index:50;width:10px;height:16px;pointer-events:none;animation:cfall linear forwards;}
   @keyframes cfall{to{transform:translateY(105vh) rotate(720deg)}}
 
-  footer{position:relative;z-index:2;text-align:center;padding:18px;color:#7d71b5;font-size:.78rem;}
+  /* bottom padding keeps the message clear of the fixed plushie-mode button */
+  footer{position:relative;z-index:2;text-align:center;padding:18px 16px 78px;color:#7d71b5;font-size:.78rem;}
 
   /* ===== responsive ===== */
   @media(max-width:760px){
