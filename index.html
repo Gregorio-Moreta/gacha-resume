@@ -19,6 +19,9 @@
   }
   /* plushie mode: hide everything except text content + plushies */
   body.zen .stage, body.zen footer{display:none;}
+  /* while the music player is open, reserve space at the bottom so it never covers the machine or cards */
+  body.player-open .stage{padding-bottom:250px;}
+  body.player-open footer{margin-bottom:220px;}
   /* twinkling dots */
   .stars{position:fixed;inset:0;pointer-events:none;z-index:0;}
   .stars span{position:absolute;border-radius:50%;background:#fff;opacity:.5;animation:tw 3s infinite alternate;}
@@ -568,6 +571,7 @@ function addScore(n){
   }
   btn.addEventListener("click",()=>{
     on=!on;
+    document.body.classList.toggle("player-open", on);
     if(on){
       render(); wrap.classList.add("show");
       btn.textContent="🔇 Stop music"; btn.classList.add("playing");
